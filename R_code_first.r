@@ -17,4 +17,3 @@ plot(zinc,copper,col="green")
 plot(zinc,copper,col="green",pch=19)
 plot(zinc,copper,col="green",pch=19,cex=2)
 
-#test
