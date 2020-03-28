@@ -2,7 +2,7 @@
 
 install.packages("sp")
 install.packages("GGally",dependencies=T) #intallation of new packages
-
+install.packages("hms")  #installed since in was required by ggpairs function
 
 library(sp) #require(sp) will also do teh same job, telling R that we are going to use this package
 library("GGally")
