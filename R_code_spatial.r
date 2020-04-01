@@ -32,7 +32,31 @@ bubble(meuse, "copper", main="Zinc concentration")
 #windows
 setwd("C:/lab/")
 
-covid <- read.table("covid_agg.csv", head=T) #link an object to a function
+covid <- read.table("covid_agg.csv", head=T) #link an object to a function #head=TRUE means that we don't want the label
+head(covid) #we open the dataset
+
+attach(covid)#attach the dataset
+plot(country,cases) #if i don't attach the database i should write plot(covid$country,covid$cases)
+
+plot(country,cases, las=0) #las is lable. with zero parallel label
+plot(country,cases, las=1) #horizontal labels
+plot(country,cases, las=2) #perpendicular labels
+plot(country,cases, las=3) #vertical labels
+
+plot(country,cases, las=3, cex.axis=0.5)
+plot(country,cases, las=3, cex.axis=0.7)
+
+
+##produce a ggplot. Are needed: data, aesthetic mapping between variable and geometrical components for the graph
+install.packages("ggplot2")
+library(ggplot2) #we want to use the package. #you can also use require(ggplot2)
+
+
+#save the .RData under File
+
+
+
+
 
 
 
