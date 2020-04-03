@@ -53,12 +53,25 @@ library(ggplot2) #we want to use the package. #you can also use require(ggplot2)
 
 
 #save the .RData under File
+#start of the new lecture
 
+setwd("C:/lab/")  #we set the previous working directory
+load(".RData") #we load the previous data set
 
+ls() #ls list of objects
+#ggplot2 has 3 key components: data, aes(aesthetic), geometry
+#we want to represent covid data with ggplot2
 
+library(ggplot2) #require(ggplot2)
 
+data(mpg) #upload the package
+head(mpg) #to see the first line
 
+ggplot(mpg, aes(x=displ, y=hwy)) + geom_point() #data si mpg,aes is related to the variables
 
+#let's change the geometry
+ggplot(mpg, aes(x=displ, y=hwy)) + geom_line()
+ggplot(mpg, aes(x=displ, y=hwy)) + geom_polygon()
 
-
-
+head(covid)
+ggplot(covid, aes(x=lon, y=lat, size=cases)) + geom_point()
