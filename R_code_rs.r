@@ -55,3 +55,8 @@ plotRGB(p224r63_2011, r=4, g=3, b=2, stretch='Lin')
 plotRGB(p224r63_2011, r=3, g=4, b=2, stretch='Lin') #nir against the green component
 
 plotRGB(p224r63_2011, r=3, g=2, b=4, stretch='Lin')
+
+################
+setwd("C:/lab/")
+load("remote_sensing.RData")
+ls() 
