@@ -38,3 +38,46 @@ load("faPAR.RData")
 
 writeRaster(copNDVI, "copNDVI.tif")
 # the new file weight 5.3MB, low space is needed
+
+###regression model between faPAR and NDVI: we look at the relation between the two variables.
+
+#relation between erosion(kg/m2) and heavy metal (ppm) mobilized
+erosion <- c(12, 14, 16, 24, 26, 40, 55, 67)
+hm <- c(30, 100, 150, 200, 260, 340, 460, 600)
+
+plot(erosion, hm, col = "red", pch = 19, xlab = "erosion", ylab = "heavy metal")
+
+# a linear model help to analyze the relation
+mod1 <- lm(hm ~ erosion)
+abline(mod1)
+
+#faPAR vs NDVI model
+setwd("C:/lab/")
+faPAR10 <- raster("faPAR10.tif")
+
+plot(faPAR10)
+plot(copNDVI)
+
+copNDVI <- reclassify(copNDVI, cbind(253:255, NA), right=TRUE)#remove water from copernicus NDVI
+
+ #select random points from the image
+install.packages("sf")
+library(sf) # to call st_* functions
+random.points <- function(x,n)
+{
+lin <- rasterToContour(is.na(x))
+pol <- as(st_union(st_polygonize(st_as_sf(lin))), 'Spatial') # st_union to dissolve geometries
+pts <- spsample(pol[1,], n, type = 'random')
+}
+
+pts <- random.points(faPAR10, 1000)
+ #extract the data
+copNNDVIp <- extract(copNDVI, pts)
+faPAR10p <- extract(faPAR10, pts)
+
+#photosynthesys vs biomass
+
+mod2 <- lm(faPAR10p ~ copNNDVIp)
+
+plot(copNNDVIp, faPAR10p, col = "green", xlab = "biomass", ylab = "photosynthesystosysn")
+abline(mod2)
