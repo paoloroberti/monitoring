@@ -54,6 +54,14 @@ plot(snow.multitemp, col=cl)
 prediction <- raster("predicted.2025.norm.tif")
 plot(prediction, col=cl)
 
+# 1:1 line
+ plot(snow.multitemp$snow2010r, snow.multitemp$snow2020r)
+ abline(0, 1, col="red") # most of the data are below the 1 to 1 curve.
+
+
+
+
+
 ## export the output
 writeRaster(prediction, "final.tif") # use this function to export a raster image in the preferred format and create a data
 
