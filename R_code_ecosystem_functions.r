@@ -1,4 +1,4 @@
-#R_code_ecosystem_functions.r
+#R_code ecosystem functions and deforestation 
 
 #R code to view biomass over world and calculate changes ine cosystem functions
 #energy
