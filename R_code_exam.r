@@ -35,7 +35,7 @@ head(meuse)
 
 #let's plot two variables
 #let's see if the zin concentration is related to that of copper
-attach(meuse)
+attach(meuse) #attach to use the dataset without use the $ 
 plot(zinc,copper)
 plot(zinc,copper,col="green")
 plot(zinc,copper,col="green",pch=19)
@@ -89,23 +89,22 @@ ggpairs(meuse[,3:6])#function after install and library of GGally
 
 # 3. R code for spatial view of points
 
-
 library(sp)
 
 data(meuse)
 
-head(meuse)#to see the top value
+head(meuse) #to see the top value
 
 #make cooridnates
 coordinates(meuse) = ~x+y #we are using these coordinates
 
 plot(meuse)
-spplot(meuse, "zinc")
+spplot(meuse, "zinc") # spplot= plot methods for spatial data with attributes
 
 #exercize: plot the spatial amount of copper
-spplot(muse, "copper", main="Copper concentration")
+spplot(muse, "copper", main="Copper concentration") 
 
-bubble(meuse, "zinc")
+bubble(meuse, "zinc") # Create a bubble plot of spatial data
 bubble(meuse, "copper", main="Zinc concentration")
 
 #make it red coll=red
@@ -308,9 +307,10 @@ plotRGB(p224r63_2011res100, r=4, g=3, b=2, stretch='Lin')
 #############################################################################
 #############################################################################
 #############################################################################
+
 #6.R_code ecosystem functions and deforestation 
 
-#R code to view biomass over world and calculate changes ine cosystem functions
+#R code to view biomass over world and calculate changes in ecosystem functions
 #energy
 #chemical cycling
 #proxies
@@ -324,7 +324,7 @@ library(rasterdiv)
 data(copNDVI)
 plot(copNDVI)
 
-copNDVI <- reclassify(copNDVI, cbind(253:255, NA))
+copNDVI <- reclassify(copNDVI, cbind(253:255, NA)) #The function reclassifies groups of values to other values
 levelplot(copNDVI)
 
 #reduce the resolution with aggregate
@@ -537,7 +537,7 @@ faPAR10 <- raster("faPAR10.tif")
 plot(faPAR10)
 plot(copNDVI)
 
-copNDVI <- reclassify(copNDVI, cbind(253:255, NA), right=TRUE)#remove water from copernicus NDVI
+copNDVI <- reclassify(copNDVI, cbind(253:255, NA), right=TRUE) #remove water from copernicus NDVI
 
  #select random points from the image
 install.packages("sf")
