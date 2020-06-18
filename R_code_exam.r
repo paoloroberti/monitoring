@@ -921,3 +921,136 @@ plot(s1, col=cl)
 #############################################################################
 
 16.R code for exam
+
+# R_code_project.r for the exam
+
+setwd("C:/lab/exam/")
+
+library(raster)
+library(rasterVis)
+library(ncdf4)
+
+#import the images all together
+list <- list.files(pattern="FCOVER_")
+upload <- lapply(list, raster) 
+fcover.multitemp <- stack(upload) 
+
+cl <- colorRampPalette(c('brown','yellow','dark green'))(150)
+
+names(fcover.multitemp) <- c("FCOVER1999", "FCOVER2005", "FCOVER2010", "FCOVER2015", "FCOVER2020")
+
+plot(fcover.multitemp, col=cl, ylim= c(-100, 100))
+
+# export fcover.multitemp.pdf
+pdf("fcover.multitem.pdf")
+plot(fcover.multitemp, col=cl, ylim= c(-100, 100))
+dev.off()
+
+#level plot
+
+levelplot(fcover.multitemp$FCOVER2010)
+
+pdf("levelplotFCOVER2010.pdf")
+levelplot(fcover.multitemp$FCOVER2010)
+dev.off()
+
+
+####test the difference between FCOVER1999 and FCOVER2020
+
+#select random points from the image
+library(sf) # to call st_* functions
+random.points <- function(x,n)
+{
+  lin <- rasterToContour(is.na(x))
+  pol <- as(st_union(st_polygonize(st_as_sf(lin))), 'Spatial') # st_union to dissolve geometries
+  pts <- spsample(pol[1,], n, type = 'random')
+}
+pts <- random.points(fcover.multitemp$FCOVER1999, 1000)
+
+#extract the data
+FCOVER1999.r <- extract(fcover.multitemp$FCOVER1999, pts)
+FCOVER2020.r <- extract(fcover.multitemp$FCOVER2020, pts)
+
+#FCOVER1999 vs FCOVER2020
+
+mod <- lm(FCOVER1999.r ~ FCOVER2020.r)
+
+plot(FCOVER1999.r, FCOVER2020.r, 
+     col = "red", 
+     xlab = "vegetation cover 1999", 
+     ylab = "vegetation cover 2020",
+     main = " FCOVER 1999 vs FCOVER 2020")
+abline(mod)
+
+#export
+pdf("vegetation 1999-2020.pdf")
+plot(FCOVER1999.r, FCOVER2020.r, 
+     col = "red", 
+     xlab = "vegetation cover 1999", 
+     ylab = "vegetation cover 2020",
+     main = " FCOVER 1999 vs FCOVER 2020")
+abline(mod)
+dev.off()
+
+
+### crop and analysis of specific area - Cenral African Rainforest
+
+ext <- c(7, 35, -12, 7)
+zoom(fcover.multitemp$FCOVER1999, ext=ext)
+CentralA1999 <- crop(fcover.multitemp$FCOVER1999, ext)
+
+zoom(fcover.multitemp$FCOVER2020, ext=ext)
+CentralA2020 <- crop(fcover.multitemp$FCOVER2020, ext)
+
+pdf("Central Africa 1999-2020.pdf")
+par(mfrow=c(2,1))
+plot(CentralA1999,
+     col= cl,
+     xlab= "longitude", 
+     ylab="latitude", 
+     main= "FCOVER Africa Rainforest 1999")
+plot(CentralA2020, 
+     col= cl,
+     xlab= "longitude", 
+     ylab="latitude", 
+     main="FCOVER Africa Rainforest 2020")
+dev.off()
+
+#FCOVER1999 vs FCOVER2020 - central African rainforest
+
+pts1 <- random.points(CentralA1999, 1000)
+
+#extract the data
+CentralA1999.r <- extract(CentralA1999, pts1)
+CentralA2020.r <- extract(CentralA2020, pts1)
+
+#CentralA1999 vs CentralA2020 
+
+mod1 <- lm(CentralA1999.r ~ CentralA2020.r)
+
+plot(CentralA1999.r, CentralA2020.r, 
+     col = "green", 
+     xlab = "vegetation cover 1999", 
+     ylab = "vegetation cover 2020",
+     main = "FCOVER1999 vs FCOVER2020\ncentral African rainforest")
+abline(mod1)
+
+#plot together FCOVER at the world and local level
+
+par(mfrow=c(2,1))
+plot(FCOVER1999.r, FCOVER2020.r, 
+     col = "red",
+     pch = 5,
+     xlab = " ",
+     ylab = "vegetation cover 2020",
+     main = "World")
+abline(mod)
+
+plot(CentralA1999.r, CentralA2020.r, 
+     col = "green",
+     pch = 5, 
+     xlab = "vegetation cover 1999", 
+     ylab = "vegetation cover 2020",
+     main = "Central African rainforest")
+abline(mod1)
+mtext("FCOVER1999 vs FCOVER2020", outer=TRUE, side=3, cex=1, line=-0.9)
