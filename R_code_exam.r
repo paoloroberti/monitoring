@@ -926,18 +926,18 @@ plot(s1, col=cl)
 
 setwd("C:/lab/exam/")
 
-library(raster)
-library(rasterVis)
-library(ncdf4)
+library(raster) # to manage spatial data
+library(rasterVis) # extention of raster package, as levelplot
+library(ncdf4) # provides a high-level R interface to data files
 
 #import the images all together
-list <- list.files(pattern="FCOVER_")
-upload <- lapply(list, raster) 
-fcover.multitemp <- stack(upload) 
+list <- list.files(pattern="FCOVER_") # to make a list af files with the common patter
+upload <- lapply(list, raster) # apply a function to all the file
+fcover.multitemp <- stack(upload) # put the files all toghether
 
-cl <- colorRampPalette(c('brown','yellow','dark green'))(150)
+cl <- colorRampPalette(c('brown','yellow','dark green'))(150) # define the color ramp palette
 
-names(fcover.multitemp) <- c("FCOVER1999", "FCOVER2005", "FCOVER2010", "FCOVER2015", "FCOVER2020")
+names(fcover.multitemp) <- c("FCOVER1999", "FCOVER2005", "FCOVER2010", "FCOVER2015", "FCOVER2020") # give the names to tha data
 
 plot(fcover.multitemp, col=cl, ylim= c(-100, 100))
 
@@ -948,7 +948,7 @@ dev.off()
 
 #level plot
 
-levelplot(fcover.multitemp$FCOVER2010)
+levelplot(fcover.multitemp$FCOVER2010) # levelplot function to visualize the latitudinal and longitudinal sum of the FCOVER variable
 
 pdf("levelplotFCOVER2010.pdf")
 levelplot(fcover.multitemp$FCOVER2010)
