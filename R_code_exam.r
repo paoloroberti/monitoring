@@ -22,7 +22,7 @@
 #############################################################################
 
 1.R code first
-install.packages("sp")
+install.packages("sp") #Classes and Methods for Spatial Data
 
 library(sp)
 data(meuse)
@@ -168,7 +168,7 @@ ggplot(covid, aes(x=lon, y=lat, size=cases)) + geom_point()
 
 setwd("C:/lab/")
 
-library(vegan)
+library(vegan) # Ordination methods, diversity analysis and other functions for community and vegetation ecologists
 
 biomes<- read.table('biomes.csv', head=T, sep=',' )
 
